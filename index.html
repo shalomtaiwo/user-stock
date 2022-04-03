@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Shalom User Stock Dashboard</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    </head>
+<body class="fs-5 overflow-auto">
+<header class="header p-3 d-flex position-sticky top-0 bg-primary flex-lg-row flex-column align-content-center">
+    <!-- Welome Message -->
+    <div class="welcome flex-grow-1 text-white text-lg-start text-center">
+        <h2>Hey there! :)</h2>
+    </div>
+    <!-- Add Items first option -->
+    <div class="add_item text-center">
+        <button data-bs-target="#add_stock_popup" data-bs-toggle="modal" class="active-form btn btn-light btn-outline-dark"><img src="assets/add-new.svg" width="20" alt="add_new_stock"></button>
+        <button data-bs-target="#remove_stock_popup" data-bs-toggle="modal" class="inactive-form btn btn-warning text-dark btn-outline-light"><img src="assets/minus.svg" width="20" alt="remove_stock"></button>
+    </div>
+</header>
+<main class="main text-dark mb-5">
+    <!-- Popups -->
+        <!-- Adding Stock -->
+        <div id="add_stock_popup" class="add_stock_popup modal fade" tabindex="-1" aria-labelledby="addPopupLabel">
+            <div class="modal-dialog modal-dialog-centered">
+            <form  id="add_form" class="modal-content">
+                <div class="close_icon modal-header">
+                    <h4 class="modal-title" id="addPopupLabel">Add Stock</h4>
+                    <button id="close_a_p" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="a_stock">
+                    <label for="stock_select" class="form-label">Select a Product Code</label>
+                    <select name="stock_select" class="form-select" id="stock_select">
+                        <option value="">--Select--</option>
+                        <option value="smoothie">Smoothie</option>
+                        <option value="lemon">Lemon</option>
+                        <option value="espresso">Espresso</option>
+                    </select>
+                </div>
+                <!-- Stock Quantity -->
+                <div class="v_add">
+                    <label for="items_value" class="form-label">Stock Quantity</label>
+                    <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" name="items_value" id="items_value">
+                </div>
+                <!-- Product Price per Single Item -->
+                <div class="v_add">
+                    <label for="items_price" class="form-label">Product single Price</label>
+                    <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="items_price" id="items_price">
+                </div>
+                </div>
+                <div class="end_button modal-footer">
+                    <input type="submit" id="add_button" class="btn btn-primary" value="Add Stock"/>
+                    <button type="reset" id="reset_a" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+        </div>
+        <!-- Removing Stock -->
+        <div id="remove_stock_popup" class="remove_stock_popup modal fade" tabindex="-1" aria-labelledby="removePopupLabel">
+            <div class="modal-dialog modal-dialog-centered">
+            <form id="remove_form" class="modal-content">
+                <div class="close_icon modal-header">
+                    <h4 class="modal-title" id="removePopupLabel">Sell Product</h4>
+                    <button id="close_r_p" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="a_stock">
+                    <label for="stock_select_r" class="form-label">Select a Product Code</label>
+                    <select name="stock_select" class="form-select" id="stock_select_r">
+                        <option value="">--Select--</option>
+                        <option value="smoothie">Smoothie</option>
+                        <option value="lemon">Lemon</option>
+                        <option value="espresso">Espresso</option>
+                    </select>
+                </div>
+                <!-- Buyer Email -->
+                <div class="u_email">
+                    <label for="email" class="form-label">Buyer Email Address</label>
+                    <input type="email" class="form-control" name="user_email" id="email">
+                </div>
+                <!-- Buyer product Quantity -->
+                <div class="s_amount">
+                    <label for="items_value_r" class="form-label">Item Quantity</label>
+                    <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" name="items_value" id="items_value_r">
+                </div>
+                <div class="end_button modal-footer">
+                    <button type="submit" id="remove_button" class="btn btn-warning">Ship Now</button>
+                    <button type="reset" id="reset_r" class="btn btn-outline-dark" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    <div class="dashboard container-md">
+        <!-- Stock Counts -->
+        <div class="stock_counts pt-5 row">
+            <!-- Smoothie -->
+            <div id="smoothie_show" class="Smoothie col mx-3 mt-3 p-2 shadow-lg border border-primary rounded">
+                <div class="head_sub text-center">
+                    <h2>Smoothies</h2>
+                    <img src="assets/smoothie.svg" width="120">
+                </div>
+                <br>
+                <div class="mx-md-3">
+                <div class="l_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div>Price</div>
+                    <h5 id="smoothie_price">R0</h5>
+                </div>
+                <br>
+                <div class="s_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div class="smoothie_stock">Stock</div>
+                    <h5 id="smoothie_stock">0</h5>
+                </div>
+            </div>
+            </div>
+            <!-- Lemon -->
+            <div id="lemon_show" class="Lemon col mx-3 mt-3 p-2 shadow-lg border border-warning rounded">
+                <div class="head_sub text-center">
+                    <h2>Lemons</h2>
+                    <img src="assets/lemon-juice.svg" width="120">
+                </div>
+                <br>
+                <div class="mx-md-3">
+                <div class="l_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div>Price</div>
+                    <h5 id="lemon_price">R0</h5>
+                </div>
+                <br>
+                <div class="l_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div class="lemon_stock">Stock</div>
+                    <h5 id="lemon_stock">0</h5>
+                </div>
+            </div>
+            </div>
+            <!-- Espresso -->
+            <div id="espresso_show" class="Espresso mx-3 mt-3 col p-2 shadow-lg border border-danger rounded">
+                <div class="head_sub text-center">
+                    <h2>Espressos</h2>
+                    <img src="assets/coffee-maker.svg" width="120">
+                </div>
+                <br>
+                <div class="mx-md-3">
+                <div class="l_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div>Price</div>
+                    <h5 id="espresso_price">R0</h5>
+                </div>
+                <br>
+                <div class="e_in_stock d-flex justify-content-between flex-md-row flex-column text-md-start text-center">
+                    <div class="espresso_stock">Stock</div>
+                    <h5 id="espresso_stock">0</h5>
+                </div>
+                </div>
+            </div>
+        </div>
+<!--Customer Email List-->
+        <div class="customers d-flex justify-content-sm-between justify-content-center text-center flex-column flex-sm-row mt-4 p-3 shadow-lg border border-danger rounded">
+                <h2>Customers</h2>
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#customer_emails">View Customers <img src="assets/view-list.svg" width="32"> </button>
+        </div>
+        <div class="modal fade" id="customer_emails" tabindex="-1" aria-labelledby="userEmail" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userEmail"><img src="assets/verify-user.svg" width="40"> Customer List</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="customerEmails" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!--End of Email List-->
+    </div>
+</main>
+<footer class="footer bottom-0 position-fixed bg-dark text-warning w-100 p-1">
+    BY SHALOM TAIWO
+</footer>
+<!-- JavaScript -->
+<script src="script.js" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+</html>
