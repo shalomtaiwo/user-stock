@@ -1,0 +1,15 @@
+{
+  "compilerOptions":{
+    "module": "AMD",
+    "removeComments": true,
+    "target": "es5",
+//    "outFile": "src/js/script.js",
+    "sourceMap": true,
+    "lib": ["es6", "dom","es2017"],
+    "types": [ "node" ],
+  },
+  "include": ["src/script.ts","typings.d.ts"],
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules"]
+  }
+  }
