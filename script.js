@@ -1,7 +1,6 @@
 //Creating our Object class to store Product Stock
 class UserObjects {
     constructor() {
-
         this.stock_quantity = document.getElementById("items_value");
         this.stock_price = document.getElementById("items_price");
         this.stock_select = document.getElementById("stock_select");
@@ -20,15 +19,6 @@ class UserObjects {
                     this.existingEmail = [...this.existingEmail, CustomerEmail]
                 }
             }
-        this.stock_storage();
-
-    }
-
-    stock_storage(){
-        window.localStorage.setItem("existingStock", JSON.stringify(this.existingStock));
-
-        let stockObject = window.localStorage.getItem("existingStock");
-        JSON.parse(stockObject);
     }
 }
 //Creating a class to add Stock
@@ -70,8 +60,7 @@ class AddNewStock extends UserObjects {
                     break;
             }
             this.stock_quantity.value = "";
-            this.stock_price.value = "";
-            return (console.log(this.existingStock));
+            this.stock_price.value = ""
         }
     }
 }
@@ -119,14 +108,16 @@ class RemoveCurrentStock extends AddNewStock{
                 }
             this.userEmail.value = "";
             this.sale_quantity.value = "";
-        return (console.log(this.existingStock));
         }
 
 }
-// Adding Class for HTML output
-class MainDisplay  extends AllStock([RemoveCurrentStock,AddNewStock]){
+
+// Creating Modal click events
+class modal_events extends AllStock([RemoveCurrentStock,AddNewStock]){
     constructor() {
         super();
+        this.$add_new_stock = document.querySelector("#add_button");
+        this.$sell_current_stock = document.querySelector("#remove_button");
         this.$sm_price = document.querySelector("#smoothie_price");
         this.$lm_price = document.querySelector("#lemon_price");
         this.$es_price = document.querySelector("#espresso_price");
@@ -134,16 +125,40 @@ class MainDisplay  extends AllStock([RemoveCurrentStock,AddNewStock]){
         this.$lm_quantity = document.querySelector("#lemon_stock");
         this.$es_quantity = document.querySelector("#espresso_stock");
         this.$userEmail = document.querySelector("#customerEmails");
+        this.addEventListeners();
     }
+
+    handleFormClick(event){
+        event.preventDefault();
+        const addToStock = this.$add_new_stock.contains(event.target);
+        const shipStockNow = this.$sell_current_stock.contains(event.target);
+        if(addToStock){
+            this.adding_stock();
+        }
+        if(shipStockNow){
+            this.removal_stock();
+        }
+        this.stockInnerHtml();
+    }
+    addEventListeners(){
+        document.body.addEventListener("click", (event) =>{
+            this.handleFormClick(event);
+            event.preventDefault();
+        })
+    }
+
     stockInnerHtml(){
-        this.$sm_price.innerHTML = `R${this.existingStock.smoothie_stock_price}`;
-        this.$sm_quantity.innerHTML = `${this.existingStock.smoothie_stock_quantity.toString()}`;
-        this.$lm_price.innerHTML = `R${this.existingStock.lemon_stock_price}`;
-        this.$lm_quantity.innerHTML = `${this.existingStock.lemon_stock_quantity.toString()}`;
-        this.$es_price.innerHTML = `R${this.existingStock.espresso_stock_price}`;
-        this.$es_quantity.innerHTML = `${this.existingStock.espresso_stock_quantity.toString()}`;
-        this.$userEmail.innerHTML = `${this.existingStock.existingEmail.join('<hr>')}`;
+        localStorage.setItem('existingStock', JSON.stringify(this.existingStock));
+        const myStock = JSON.parse(localStorage.getItem('existingStock')) || [];
+        this.$sm_price.innerHTML = `R${myStock.smoothie_stock_price}`;
+        this.$sm_quantity.innerHTML = `${myStock.smoothie_stock_quantity.toString()}`;
+        this.$lm_price.innerHTML = `R${myStock.lemon_stock_price}`;
+        this.$lm_quantity.innerHTML = `${myStock.lemon_stock_quantity.toString()}`;
+        this.$es_price.innerHTML = `R${myStock.espresso_stock_price}`;
+        this.$es_quantity.innerHTML = `${myStock.espresso_stock_quantity.toString()}`;
+        this.$userEmail.innerHTML = `${myStock.existingEmail.join('<hr>')}`;
     }
+
 }
 // Call both RemoveCurrentStock and AddNewStock classes to MainDisplay class
 // Couldn't find how to extend two classes at the same time, thanks to StackOverflow!
@@ -159,35 +174,6 @@ function AllStock(bases) {
             .forEach(prop => Bases.prototype[prop] = base.prototype[prop])
     })
     return Bases;
-}
-
-// Creating Modal click events
-class modal_events extends MainDisplay{
-    constructor() {
-        super();
-        this.$add_new_stock = document.querySelector("#add_button");
-        this.$sell_current_stock = document.querySelector("#remove_button");
-
-        this.addEventListeners();
-    }
-    addEventListeners(){
-        document.body.addEventListener("click", (event) =>{
-            this.handleFormClick(event);
-            event.preventDefault();
-        })
-    }
-    handleFormClick(event){
-        const addToStock = this.$add_new_stock.contains(event.target);
-        const shipStockNow = this.$sell_current_stock.contains(event.target);
-        if(addToStock){
-            this.adding_stock();
-        }
-        if(shipStockNow){
-            this.removal_stock();
-        }
-        this.stockInnerHtml();
-    }
-
 }
 
 const output = new modal_events();
